@@ -18,7 +18,7 @@ import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router'
     name: 'M307',
     component: M307Component
 }, {
-    path: '/home',
+    path: '/',
     name: 'Home',
     component: HomeComponent,
     useAsDefault: true
