@@ -11,10 +11,10 @@ import {NgClass, NgIf} from 'angular2/common';
 })
 export class M307Component {
 	public static routes: Route[] = [
-		new Route('JS-Form', 'php/js-form'),
-		new Route('Use Case 1', 'php/uc1'),
-		new Route('Use Case 2', 'php/uc2'),
-		new Route('Test Result', 'php/test')
+		new Route('JS-Form', 'js-form'),
+		new Route('Use Case 1', 'uc1'),
+		new Route('Use Case 2', 'uc2'),
+		new Route('Test Result', 'test')
 	];
 	public routes: Route[] = M307Component.routes;
 	public currentRoutes: Route[] = [];
