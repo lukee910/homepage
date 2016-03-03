@@ -1,0 +1,26 @@
+<h1>M307</h1>
+<p>Here are four examples of excercises in php and JavaScript. Check out the Source Code on <a href="https://www.dropbox.com/sh/lrqtv39y3c6d48f/AAAISCAYfMZj3ncyKZmjy7vya?dl=0" target="_blank">Dropbox</a>.</p>
+
+<ul class="nav nav-pills">
+	<li class="nav-item" *ngFor="#route of routes">
+		<a class="nav-link" [ngClass]="{active: currentRoutes[1].path === route.path}" (click)="loadRoute(route)">{{ route.name }}</a>
+	</li>
+</ul>
+<div class="row frame-container" [ngClass]="{'frame-fullscreen darkmode': isFrameFullscreen}">
+	<div class="col-xs-12 frame-button-nav">
+		<div class="btn-group" role="group">
+			<button type="button" class="btn btn-secondary" (click)="loadRoute(currentRoutes[0])">
+				<i class="fa fa-arrow-left"></i>
+			</button>
+			<button type="button" class="btn btn-secondary" (click)="toggleFullscreen()">
+				<i class="fa fa-arrows-alt"></i>
+			</button>
+			<button type="button" class="btn btn-secondary" (click)="loadRoute(currentRoutes[2])">
+				<i class="fa fa-arrow-right"></i>
+			</button>
+		</div>
+	</div>
+	<div class="col-xs-12"> 
+		<iframe class="frame" id="m307-frame" src="http://192.168.192.8/{{currentRoutes[1].path}}"></iframe>
+	</div>
+</div>

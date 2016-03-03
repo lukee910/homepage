@@ -1,0 +1,42 @@
+{
+  "name": "homepage",
+  "version": "0.0.1",
+  "description": "Personal Homepage at www.lukee910.ch",
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukee910/homepage.git"
+  },
+  "author": "Lukas Doerig <lukee910@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/lukee910/homepage/issues"
+  },
+  "homepage": "http://www.lukee910.ch",
+  "license": "MIT",
+  "scripts": {
+    "start": "concurrently \"npm run tsc:w\" \"npm run lite\" ",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "lite": "lite-server",
+    "typings": "typings",
+    "postinstall": "typings install"
+  },
+  "dependencies": {
+    "angular2": "2.0.0-beta.7",
+    "bootstrap": "^4.0.0-alpha.2",
+    "es6-promise": "^3.0.2",
+    "es6-shim": "^0.33.3",
+    "jquery": "2.2.1",
+    "reflect-metadata": "0.1.2",
+    "rxjs": "5.0.0-beta.2",
+    "systemjs": "0.19.22",
+    "tether": "^1.2.0",
+    "zone.js": "0.5.15"
+  },
+  "devDependencies": {
+    "concurrently": "^2.0.0",
+    "lite-server": "^2.1.0",
+    "typescript": "^1.8.2",
+    "typings": "^0.6.8"
+  }
+}

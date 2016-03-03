@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>Lukee910</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">    
+
+        <!-- Load libraries -->
+        <!-- CSS -->
+        
+        <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css">
+        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="styles/main.css">
+
+        <!-- JS -->
+
+        <!-- IE required polyfills, in this exact order -->
+        <script src="node_modules/es6-shim/es6-shim.min.js"></script>
+        <script src="node_modules/systemjs/dist/system-polyfills.js"></script>
+        <script src="node_modules/angular2/es6/dev/src/testing/shims_for_IE.js"></script>   
+        <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
+        <script src="node_modules/systemjs/dist/system.src.js"></script>
+        <script src="node_modules/rxjs/bundles/Rx.js"></script>
+        <!---->
+        <script src="node_modules/jquery/dist/jquery.js"></script>
+        <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
+        <script src="node_modules/angular2/bundles/router.dev.js"></script>
+        <script src="node_modules/tether/dist/js/tether.js"></script>
+        <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+        <!-- Configure SystemJS -->
+        <script>
+        System.config({
+            packages: {        
+              app: {
+                format: 'register',
+                defaultExtension: 'js'
+              }
+            }
+        });
+        System.import('app/main')
+            .then(null, console.error.bind(console));
+        </script>
+        
+        <base href="/">
+    </head>
+
+    <!-- Display the application -->
+    <body>
+        <homepage></homepage>
+    </body>
+</html>
