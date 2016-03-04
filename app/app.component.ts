@@ -2,7 +2,7 @@ import {Component} from 'angular2/core';
 import {M307Component} from './components/m307/m307';
 import {M105Component} from './components/m105/m105';
 import {HomeComponent} from './components/home/home';
-import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
+import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Router} from 'angular2/router';
 
 @Component({
     selector: 'homepage',
@@ -29,5 +29,11 @@ import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router'
     useAsDefault: true
 }])
 export class AppComponent {
-    public activeRoute: string;
+    public routes: string[] = [
+        'Home',
+        'M105',
+        'M307'
+    ];
+
+    constructor(public router: Router) {}
 }
