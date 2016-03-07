@@ -1,7 +1,8 @@
 import {Component} from 'angular2/core';
-import {M307Component} from './components/m307/m307';
-import {M105Component} from './components/m105/m105';
-import {HomeComponent} from './components/home/home';
+import {M307Component} from './m307/m307.component';
+import {M105Component} from './m105/m105.component';
+import {McSimComponent} from './mcsim/mcsim.component';
+import {HomeComponent} from './home/home.component';
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Router} from 'angular2/router';
 
 @Component({
@@ -23,6 +24,10 @@ import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Router} from 'angular2
     name: 'M105',
     component: M105Component
 }, {
+    path: '/mcsim',
+    name: 'MC Sim',
+    component: McSimComponent
+}, {
     path: '/',
     name: 'Home',
     component: HomeComponent,
@@ -32,7 +37,8 @@ export class AppComponent {
     public routes: string[] = [
         'Home',
         'M105',
-        'M307'
+        'M307',
+        'MC Sim'
     ];
 
     constructor(public router: Router) {}
