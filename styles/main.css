@@ -71,3 +71,36 @@ body {
 .frame-fullscreen .frame-button-nav {
 	padding: 0 30px;
 }
+
+/*
+	====================================
+    MC Sim
+	====================================
+*/
+.program-length {
+	width: auto;
+	display: inline-block;
+}
+
+.bit-counter,
+.bit {
+	height: 20px;
+	width: 20px;
+	background: white;
+	border: 1px solid black;
+	margin: 5px;
+	display: inline-block;
+}
+
+.bit-counter:not(.finished),
+.bit.on {
+	background: black;
+}
+
+.bit-counter.finished {
+	border-color: #5bc0de;
+}
+
+.bit-col {
+	height: 30px;
+}

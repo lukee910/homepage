@@ -1,0 +1,91 @@
+<p>Work in progress. Currently, you have to enter the commands in decimal form into the input, separated by semicolons. Example: "4;7;14;11;"</p>
+<div class="row">
+	<div class="col-xs-2">
+		<input type="text" class="form-control" [(ngModel)]="CommandsModel">
+	</div>
+	<div class="col-xs-1">
+		<button class="btn btn-default" (click)="SetCommands()">Compile</button>
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="col-xs-12">
+		<button class="btn btn-default" (click)="mcService.Clock()">Clock</button>
+		<button class="btn btn-default" (click)="Reset()">Reset</button>
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="col-xs-2">
+		<h3>ROM</h3>
+		<div class="row" *ngFor="#value of mcService.env.ROM; #outerI = index">
+			<div class="col-xs-12 bit-col">
+				<div class="bit" *ngFor="#bit of ArrayOfLength(mcService.env.Bit); #i = index" [ngClass]="{on: IsBitOn(value, i)}"
+					(click)="ToggleBitOfCollection(mcService.env.ROM, outerI, i)"></div>
+				<div class="bit-counter" *ngIf="mcService.env.ProgramCounter === outerI" [ngClass]="{'finished': mcService.env.ProgramFinished()}"></div>
+			</div>
+		</div>
+		<br>
+		<div>
+			<label for="rom-length">Length of Program in ROM</label>
+			<div>
+				<input id="rom-length" [(ngModel)]="RomLength" type="number" class="form-control form-control-sm program-length">
+				<button class="btn btn-default btn-sm" (click)="ApplyRomLength()"><span *ngIf="RomLength !== mcService.env.RomLength">*</span>Apply</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-2">
+		<h3>RAM</h3>
+		<div class="row" *ngFor="#value of mcService.env.RAM; #outerI = index">
+			<div class="col-xs-12">
+				<div class="bit" *ngFor="#bit of ArrayOfLength(mcService.env.Bit); #i = index" [ngClass]="{on: IsBitOn(value, i)}"
+					(click)="ToggleBitOfCollection(mcService.env.RAM, outerI, i)"></div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-4">
+		<div class="row">
+			<div class="col-xs-12">
+				<h3>In</h3>
+				<div class="bit" *ngFor="#bit of ArrayOfLength(mcService.env.Bit); #i = index" [ngClass]="{on: IsBitOn(mcService.env.In, i)}"
+					(click)="ToggleBit('In', i)"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<h3>Out</h3>
+				<div class="bit" *ngFor="#bit of ArrayOfLength(mcService.env.Bit); #i = index" [ngClass]="{on: IsBitOn(mcService.env.Out, i)}"
+					(click)="ToggleBit('Out', i)"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<h3>Accumulator A</h3>
+				<div>
+					<button class="btn btn-sm btn-default" (click)="mcService.env.Carry = !mcService.env.Carry">Carry: {{mcService.env.Carry}}</button>
+				</div>
+				<div class="bit" *ngFor="#bit of ArrayOfLength(mcService.env.Bit); #i = index" [ngClass]="{on: IsBitOn(mcService.env.A, i)}"
+					(click)="ToggleBit('A', i)"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<h3>Accumulator B</h3>
+				<div class="bit" *ngFor="#bit of ArrayOfLength(mcService.env.Bit); #i = index" [ngClass]="{on: IsBitOn(mcService.env.B, i)}"
+					(click)="ToggleBit('B', i)"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<h3>ProgramCounter</h3>
+				<div class="bit" *ngFor="#bit of ArrayOfLength(mcService.env.Bit); #i = index" [ngClass]="{on: IsBitOn(mcService.env.ProgramCounter, i)}"
+					(click)="ToggleBit('ProgramCounter', i)"></div>
+				<div class="row">
+					<div class="col-xs-12">
+						<span class="label label-info" *ngIf="mcService.env.ProgramFinished()">End of Program</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
