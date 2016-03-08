@@ -1,6 +1,7 @@
 import {Component} from 'angular2/core';
 import {McService} from './mcsim.service';
 import {McEnvironment} from '../model/McEnvironment';
+import {Statement} from '../model/Statement';
 import {NgFor, NgIf} from 'angular2/common';
 
 @Component({

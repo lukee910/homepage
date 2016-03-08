@@ -6,7 +6,7 @@ import {Statement} from '../model/Statement';
 export class McService {
 	public Program: Statement[] = [];
 
-	constructor(public env: McEnvironment, private statements: Statement[] = Statement.GetMcSimStatements()) {}
+	constructor(public env: McEnvironment, public Statements: Statement[] = Statement.GetMcSimStatements()) {}
 
 	public Clock(): boolean {
 		var id = this.env.ReadROM();
@@ -15,7 +15,7 @@ export class McService {
 		}
 		var param: number;
 		var statement: Statement;
-		this.statements.forEach(function(value: Statement) {
+		this.Statements.forEach(function(value: Statement) {
 			if (value.Id === id) {
 				statement = value;
 				return;
@@ -81,12 +81,5 @@ export class McService {
 		this.env.SetROM();*/
 
 		return true;
-	}
-
-	public debug(): void {
-		this.statements[4].Action(this.env, 5);
-		this.statements[14].Action(this.env);
-		this.statements[11].Action(this.env);
-		console.log(this.env.Out);
 	}
 }

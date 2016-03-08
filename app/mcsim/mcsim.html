@@ -88,4 +88,9 @@
 			</div>
 		</div>
 	</div>
+	<div class="col-xs-4">
+		<div *ngFor="#statement of mcService.Statements">
+			<i>{{statement.Id}}</i> - {{statement.Name}}: {{statement.Desc}}
+		</div>
+	</div>
 </div>
