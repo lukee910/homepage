@@ -4,7 +4,7 @@ import {Statement} from '../model/Statement';
 
 @Injectable()
 export class McService {
-	public Program: number[] = [];
+	public CompileErrorMessage: string = '';
 
 	constructor(public env: McEnvironment, public Statements: Statement[] = Statement.GetMcSimStatements()) {}
 
@@ -35,49 +35,57 @@ export class McService {
 	}
 
 	public Compile(code: string): boolean {
-		var statements: string[] = code.split(';');
-		if(statements[statements.length - 1].trim() !== 'end') {
+		this.CompileErrorMessage = '';
+
+		var statements: string[] = code.split('\n');
+		statements.forEach(function(value: string, index: number) {
+			statements[index] = value.split(';')[0].trim();
+		});
+		if (statements[statements.length - 1] !== 'end') {
+			this.CompileErrorMessage = 'End statement missing/invalid.';
 			return false;
 		}
 
         statements[0] = statements[0].replace(/[ \n]+/g, ' ');
-        if(statements[0] !== ' ') {
+        if (statements[0] !== ' ') {
             let beginning = statements[0].split(' ');
-            if(beginning[0].toLowerCase() !== 'program') {
+            if (beginning[0].toLowerCase() !== 'program') {
+				this.CompileErrorMessage = 'Program statement (beginning) missing/invalid.';
                 return false;
             }
-            statements[0] = beginning[2] + ' ' + (beginning[3] || '');
+            statements[0] = '';
         } else {
+			this.CompileErrorMessage = 'Program statement (beginning) missing/invalid.';
             return false;
         }
 
 		var program: number[] = [];
 		for (let i: number = 0; i < statements.length - 1; i++) {
-            if(statements[i].trim() === '') {
+            if (!statements[i]) {
                 continue;
             }
 
 			var statement: Statement = null;
 			this.Statements.forEach(function(value: Statement) {
                 var regex = new RegExp(value.Name + '[ ]{0,1}' + (value.TakesParam ? '[0-9]+' : ''));
-				if (regex.test(statements[i].trim())) {
+				if (regex.test(statements[i])) {
 					statement = value;
 				}
 			});
 			if (statement === null) {
+				this.CompileErrorMessage = 'Statement not found: ' + statements[i];
 				return false;
 			}
 			program.push(statement.Id);
-            if(statement.TakesParam) {
-                let param = parseInt(statements[i].trim().replace(statement.Name, ''));
-                if(isNaN(param)) {
+            if (statement.TakesParam) {
+                let param = parseInt(statements[i].replace(statement.Name, ''));
+                if (isNaN(param)) {
+					this.CompileErrorMessage = 'Parameter was not a number. Statement: ' + statement.Name + ', Parameter: ' + statements[i];
                     return false;
                 }
                 program.push(param);
             }
 		}
-
-		this.Program = program;
-		return this.env.SetROM(this.Program);
+		return this.env.SetROM(program);
 	}
 }

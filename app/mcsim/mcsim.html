@@ -3,10 +3,14 @@
 		<textarea class="form-control form-control-sm" rows="8" [(ngModel)]="CommandsModel" (keypress)="Commands_OnKeyPress($event)"></textarea>
 	</div>
 	<div class="col-xs-6">
-		<button class="btn btn-secondary" [ngClass]="{
-		    'btn-success-outline': compilationResult === true,
-		    'btn-danger-outline': compilationResult === false
-		}" (click)="SetCommands()">Compile</button>
+		<div class="row">
+			<div class="col-xs-12 wrap-margin">
+				<button class="btn btn-primary-outline" (click)="SetCommands()">Compile</button>
+			</div>
+			<div class="col-xs-12">
+				<p class="label label-danger" *ngIf="mcService.CompileErrorMessage !== ''">{{mcService.CompileErrorMessage}}</p>
+			</div>
+		</div>
 	</div>
 </div>
 <br>
