@@ -1,6 +1,6 @@
 <div class="row">
-	<div class="col-xs-12 col-md-6 wrap-margin">
-		<textarea class="form-control form-control-sm" rows="8" [(ngModel)]="CommandsModel" (keypress)="Commands_OnKeyPress($event)"></textarea>
+	<div class="col-xs-12 col-md-4 wrap-margin">
+		<textarea class="form-control form-control-sm" rows="8" [(ngModel)]="CommandsModel" (keypress)="Commands_OnKeyPress($event)"  title="Press Ctrl+Enter to Compile"></textarea>
 	</div>
 	<div class="col-xs-6">
 		<div class="row">
@@ -34,7 +34,7 @@
 		<div>
 			<label for="rom-length">Length of Program in ROM</label>
 			<div>
-				<input id="rom-length" [(ngModel)]="RomLength" type="number" class="form-control form-control-sm program-length">
+				<input id="rom-length" [(ngModel)]="RomLength" type="number" class="form-control form-control-sm program-length wrap-margin">
 				<button class="btn btn-secondary btn-sm" (click)="ApplyRomLength()"><span *ngIf="RomLength !== mcService.env.RomLength">*</span>Apply</button>
 			</div>
 		</div>

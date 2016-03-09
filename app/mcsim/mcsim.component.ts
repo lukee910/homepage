@@ -33,7 +33,7 @@ export class McSimComponent {
 	}
 
 	public ApplyRomLength(): void {
-		if(this.RomLength < 0 || this.RomLength >= this.mcService.env.ROM.length) {
+		if(this.RomLength < 0 || this.RomLength > this.mcService.env.ROM.length) {
 			return;
 		}		
 		this.mcService.env.RomLength = this.RomLength;

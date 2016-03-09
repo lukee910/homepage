@@ -66,12 +66,20 @@ export class McService {
             }
 
 			var statement: Statement = null;
+			var hasMissingParam = false;
 			this.Statements.forEach(function(value: Statement) {
-                var regex = new RegExp(value.Name + '[ ]{0,1}' + (value.TakesParam ? '[0-9]+' : ''));
+                var regex = new RegExp('^' + value.Name + '[ ]{0,1}' + (value.TakesParam ? '[0-9]*' : '') + '$');
 				if (regex.test(statements[i])) {
 					statement = value;
 				}
+				if (value.TakesParam && statements[i] === value.Name) {
+					hasMissingParam = true;
+				}
 			});
+			if (hasMissingParam) {
+				this.CompileErrorMessage = 'Parameter missing for statement ' + statements[i];
+				return;
+			}
 			if (statement === null) {
 				this.CompileErrorMessage = 'Statement not found: ' + statements[i];
 				return false;
