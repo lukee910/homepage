@@ -1,3 +1,5 @@
+import {McEnvironmentConfig} from './McEnvironmentConfig';
+
 export class McEnvironment {
 	public ProgramCounter: number;
 	public ROM: number[];
@@ -6,17 +8,15 @@ export class McEnvironment {
 	public A: number;
 	public B: number;
 	public Carry: boolean;
-	public Bit: number;
 	public Max: number;
 	public In: number;
 	public Out: number;
 
-	constructor(bit: number) {
-		if(bit > 24 || bit < 0 || Math.floor(bit) !== bit) {
-			throw `[McEnvrionment.ts:constructor] ${bit} is not a valid value for bits.`;
+	constructor(public Config: McEnvironmentConfig) {
+		if (Config.Bit() > 24 || Config.Bit() < 0 || Math.floor(Config.Bit()) !== Config.Bit()) {
+			throw `[McEnvrionment.ts:constructor] ${Config.Bit()} is not a valid value for bits.`;
 		}
-		this.Bit = bit;
-		this.Max = Math.pow(2, this.Bit) - 1;
+		this.Max = Math.pow(2, Config.Bit()) - 1;
 		this.Reset();
 	}
 
@@ -29,19 +29,19 @@ export class McEnvironment {
 			= this.Out
 			= 0;
 		this.Carry = false;		
-		this.ROM = this.GenerateMemory();
-		this.RAM = this.GenerateMemory();
+		this.ROM = this.GenerateMemory(this.Config.RomLength());
+		this.RAM = this.GenerateMemory(this.Config.RamLength());
 	}
 
 	public ReadROM(): number {
-		if(this.ProgramCounter >= this.ROM.length || this.ProgramFinished()) {
+		if (this.ProgramCounter >= this.Config.RomLength() || this.ProgramFinished()) {
 			return -1;
 		}
 		return this.ROM[this.ProgramCounter++];
 	}
 
 	public SetROM(values: number[]): boolean {
-		if(values.length > this.Max) {
+		if (values.length > this.Config.RomLength()) {
 			return false;
 		}
         var hasTooLong = false;
@@ -57,7 +57,7 @@ export class McEnvironment {
 
 		this.ROM = values;
 		this.RomLength = values.length;
-		while(this.ROM.length < this.Max) {
+		while (this.ROM.length < this.Config.RomLength()) {
 			this.ROM.push(0);
 		}
 		return true;
@@ -81,14 +81,17 @@ export class McEnvironment {
 	public SetAccumulator(value: number, isA: boolean): void {
 		if(isA) {
 			this.A = Math.abs(this.GetModulo(value));
+			if (this.Config.ResetCarryOnSetAccumulator()) {
+				this.Carry = false;
+			}
 		} else {
 			this.B = Math.abs(this.GetModulo(value));
 		}
 	}
 
-	private GenerateMemory(): number[] {
+	private GenerateMemory(length: number): number[] {
 		var ret = [];
-		for (let i = 0; i < this.Max; i++) {
+		for (let i = 0; i < length; i++) {
 			ret.push(0);
 		}
 		return ret;

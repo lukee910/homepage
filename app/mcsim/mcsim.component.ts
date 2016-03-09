@@ -1,31 +1,35 @@
 import {Component} from 'angular2/core';
 import {McService} from './mcsim.service';
 import {McEnvironment} from '../model/McEnvironment';
+import {McSimConfig} from '../model/McEnvironmentConfig';
 import {Statement} from '../model/Statement';
 import {NgFor, NgIf} from 'angular2/common';
 
 @Component({
-    templateUrl: 'app/mcsim/mcsim.html',
-    directives: [
-    	NgFor,
-		NgIf
-    ]
+    templateUrl: 'app/mcsim/mcsim.html'
 })
 export class McSimComponent {
 	public mcService: McService;
 	public TempCommands: number[] = [];
-	public CommandsModel: string = '';
+	public CommandsModel: string = 'Program _\n\nend';
 	public RomLength: number = 0;
     private compilationResult: boolean;
 
 	constructor() {
-		this.mcService = new McService(new McEnvironment(4));
+		this.mcService = new McService(new McEnvironment(new McSimConfig()));
 	}
 
 	public SetCommands(): void {
         this.mcService.env.Reset();
 		this.compilationResult = !!this.mcService.Compile(this.CommandsModel);
         this.RomLength = this.mcService.env.RomLength;
+	}
+
+	private Commands_OnKeyPress($event: KeyboardEvent) {
+		if ($event.ctrlKey && ($event.keyCode === 13 || $event.keyCode === 10)) {
+			this.SetCommands();
+			$event.stopPropagation();
+		}
 	}
 
 	public ApplyRomLength(): void {
@@ -40,7 +44,7 @@ export class McSimComponent {
 		return (value >>> 0).toString(2).split('').reverse()[position] === '1';
 	}
 
-	public ArrayOfLength(value: number): Object[] {
+	public ArrayOfLength(value: number = this.mcService.env.Config.Bit()): Object[] {
 		return new Array(value);
 	}
 
@@ -82,6 +86,6 @@ export class McSimComponent {
 	}
 
 	private CorrectPosition(position: number): number {
-		return this.mcService.env.Bit - 1 - position;
+		return this.mcService.env.Config.Bit() - 1 - position;
 	}
 }
