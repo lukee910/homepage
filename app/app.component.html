@@ -1,8 +1,18 @@
 <div class="navbar navbar-fixed-top navbar-dark bg-inverse">
-    <a class="navbar-brand" [routerLink]="['Home']">Lukee910</a>
+    <a class="navbar-brand" [routerLink]="['Home']">lukee910</a>
     <ul class="nav navbar-nav">
-        <li class="nav-item" *ngFor="#route of routes">
-            <a class="nav-link" [ngClass]="{active: router.isRouteActive(router.generate([route]))}" [routerLink]="[route]">{{route}}</a>
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['Home']">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" [class.router-link-active]="HasActiveRoute(['/m105', '/m307'])" role="button" data-toggle="dropdown">&Uuml;K</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" [routerLink]="['M105']">M105</a>
+                <a class="dropdown-item" [routerLink]="['M307']">M307</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['MC Sim']">MC Sim</a>
         </li>
     </ul>
 </div>

@@ -1,5 +1,6 @@
 body {
     padding-top: 65px;
+    padding-bottom: 30px;
 }
 
 /*
@@ -11,15 +12,26 @@ body {
 .nav.nav-pills .nav-link {
 	cursor: pointer;
 	color: #373a3c;
-	border-color: #ccc;
-	border-width: 1px;
-	border-style: solid;
+    border: 1px solid #ccc;
 }
 
 .nav.nav-pills .nav-link.active {
 	background-color: #373a3c;
 	border-color: #373a3c;
 	color: white;
+}
+
+.wrap-margin {
+    margin-bottom: 5px;
+}
+
+.wrap-margin-lg {
+    margin-bottom: 15px;
+}
+
+.navbar-dark .nav-link.router-link-active,
+.navbar-dark .nav-link.router-link-active:focus {
+    color: white;
 }
 
 /*
@@ -78,7 +90,7 @@ body {
 	====================================
 */
 .program-length {
-	width: auto;
+	width: 70px;
 	display: inline-block;
 }
 
