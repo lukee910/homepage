@@ -4,7 +4,7 @@ import {Statement} from '../model/Statement';
 
 @Injectable()
 export class McService {
-	public Program: Statement[] = [];
+	public Program: number[] = [];
 
 	constructor(public env: McEnvironment, public Statements: Statement[] = Statement.GetMcSimStatements()) {}
 
@@ -13,8 +13,8 @@ export class McService {
 		if (id === -1) {
 			return false;
 		}
-		var param: number;
-		var statement: Statement;
+		var param: number = 0;
+		var statement: Statement = undefined;
 		this.Statements.forEach(function(value: Statement) {
 			if (value.Id === id) {
 				statement = value;
@@ -39,47 +39,45 @@ export class McService {
 		if(statements[statements.length - 1].trim() !== 'end') {
 			return false;
 		}
-		statements[0] = statements[0].trim();
-		var splitted: string[] = statements[0].split(/\s*\n\s*/);
-		var hasProgram: boolean = false;
-		splitted.forEach(function(value: string) {
-			if (value.trim() === '') {
-				return;
-			}
-			if (value.indexOf('Program') !== -1) {
-				hasProgram = true;
-				return;
-			}
-		});
-		if (splitted[splitted.length - 1].trim() === '') {
-			return false;
-		} else {
-			statements[0] = splitted[splitted.length - 1];
-		}
 
-		/*var program: Statement[] = [];
-		var statementCodes: number[] = [];
+        statements[0] = statements[0].replace(/[ \n]+/g, ' ');
+        if(statements[0] !== ' ') {
+            let beginning = statements[0].split(' ');
+            if(beginning[0].toLowerCase() !== 'program') {
+                return false;
+            }
+            statements[0] = beginning[2] + ' ' + (beginning[3] || '');
+        } else {
+            return false;
+        }
+
+		var program: number[] = [];
 		for (let i: number = 0; i < statements.length - 1; i++) {
+            if(statements[i].trim() === '') {
+                continue;
+            }
+
 			var statement: Statement = null;
-			this.statements.forEach(function(value: Statement) {
-				if (value.Name === statements[i].trim()) {
+			this.Statements.forEach(function(value: Statement) {
+                var regex = new RegExp(value.Name + '[ ]{0,1}' + (value.TakesParam ? '[0-9]+' : ''));
+				if (regex.test(statements[i].trim())) {
 					statement = value;
 				}
 			});
 			if (statement === null) {
 				return false;
 			}
-			program.push(statement);
-			statementCodes.push(statement.Id);
-		}
-
-		if (this.env.Max > program.length) {
-			return false;
+			program.push(statement.Id);
+            if(statement.TakesParam) {
+                let param = parseInt(statements[i].trim().replace(statement.Name, ''));
+                if(isNaN(param)) {
+                    return false;
+                }
+                program.push(param);
+            }
 		}
 
 		this.Program = program;
-		this.env.SetROM();*/
-
-		return true;
+		return this.env.SetROM(this.Program);
 	}
 }

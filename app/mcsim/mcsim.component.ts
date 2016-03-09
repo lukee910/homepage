@@ -16,22 +16,16 @@ export class McSimComponent {
 	public TempCommands: number[] = [];
 	public CommandsModel: string = '';
 	public RomLength: number = 0;
+    private compilationResult: boolean;
 
 	constructor() {
 		this.mcService = new McService(new McEnvironment(4));
 	}
 
 	public SetCommands(): void {
-		var commands: number[] = [];
-		this.CommandsModel.split(';').forEach(function (value: string) {
-			var parsed: number = parseInt(value);
-			if (!isNaN(parsed)) {
-				commands.push(parsed);
-			}			
-		});
-		this.mcService.env.Reset();
-		this.mcService.env.SetROM(commands);
-		this.RomLength = this.mcService.env.RomLength;
+        this.mcService.env.Reset();
+		this.compilationResult = !!this.mcService.Compile(this.CommandsModel);
+        this.RomLength = this.mcService.env.RomLength;
 	}
 
 	public ApplyRomLength(): void {
@@ -69,6 +63,7 @@ export class McSimComponent {
 	public Reset(): void {
 		this.mcService.env.Reset();
 		this.RomLength = this.mcService.env.RomLength;
+        this.compilationResult = undefined;
 	}
 
 	private ToggleBitInValue(value: number, position: number): number {

@@ -34,6 +34,10 @@ body {
     color: white;
 }
 
+.btn-secondary:not(.btn-danger-outline):not(.btn-success-outline) {
+    border-color: #373a3c;
+}
+
 /*
 	====================================
     M307 IFrame

@@ -40,12 +40,23 @@ export class McEnvironment {
 		return this.ROM[this.ProgramCounter++];
 	}
 
-	public SetROM(value: number[]): boolean {
-		if(value.length > this.Max) {
+	public SetROM(values: number[]): boolean {
+		if(values.length > this.Max) {
 			return false;
 		}
-		this.ROM = value;
-		this.RomLength = value.length;
+        var hasTooLong = false;
+        var max = this.Max;
+		values.forEach(function(value) {
+            if(value > max) {
+                hasTooLong = true;
+            }
+        });
+        if(hasTooLong) {
+            return false;
+        }
+
+		this.ROM = values;
+		this.RomLength = values.length;
 		while(this.ROM.length < this.Max) {
 			this.ROM.push(0);
 		}

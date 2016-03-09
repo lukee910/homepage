@@ -49,7 +49,7 @@ export class Statement {
 			env.ProgramCounter = param;
 		}));
 		// JCS
-		ret.push(new Statement('JJCSMP', 'Jump to statement if carry.', 7, true, (env: McEnvironment, param: number) => {
+		ret.push(new Statement('JCS', 'Jump to statement if carry.', 7, true, (env: McEnvironment, param: number) => {
 			if (param >= env.ROM.length || param < 0 || !env.Carry) {
 				return;
 			}

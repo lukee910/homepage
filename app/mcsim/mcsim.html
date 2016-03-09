@@ -1,17 +1,19 @@
-<p>Work in progress. Currently, you have to enter the commands in decimal form into the input, separated by semicolons. Example: "4;7;14;11;"</p>
 <div class="row">
 	<div class="col-xs-4">
-		<input type="text" class="form-control" [(ngModel)]="CommandsModel">
+		<textarea class="form-control form-control-sm" rows="8" [(ngModel)]="CommandsModel"></textarea>
 	</div>
 	<div class="col-xs-1">
-		<button class="btn btn-default" (click)="SetCommands()">Compile</button>
+		<button class="btn btn-secondary" [ngClass]="{
+		    'btn-success-outline': compilationResult === true,
+		    'btn-danger-outline': compilationResult === false
+		}" (click)="SetCommands()">Compile</button>
 	</div>
 </div>
 <br>
 <div class="row">
 	<div class="col-xs-12">
-		<button class="btn btn-default wrap-margin" (click)="mcService.Clock()">Clock</button>
-		<button class="btn btn-default wrap-margin" (click)="Reset()">Reset</button>
+		<button class="btn btn-primary-outline wrap-margin" (click)="mcService.Clock()" [disabled]="mcService.env.ProgramFinished()">Clock</button>
+		<button class="btn btn-secondary wrap-margin" (click)="Reset()">Reset</button>
 	</div>
 </div>
 <div class="row">
@@ -29,7 +31,7 @@
 			<label for="rom-length">Length of Program in ROM</label>
 			<div>
 				<input id="rom-length" [(ngModel)]="RomLength" type="number" class="form-control form-control-sm program-length">
-				<button class="btn btn-default btn-sm" (click)="ApplyRomLength()"><span *ngIf="RomLength !== mcService.env.RomLength">*</span>Apply</button>
+				<button class="btn btn-secondary btn-sm" (click)="ApplyRomLength()"><span *ngIf="RomLength !== mcService.env.RomLength">*</span>Apply</button>
 			</div>
 		</div>
 	</div>
@@ -61,7 +63,7 @@
 			<div class="col-xs-12">
 				<h3>Accumulator A</h3>
 				<div>
-					<button class="btn btn-sm btn-default wrap-margin" (click)="mcService.env.Carry = !mcService.env.Carry">Carry: {{mcService.env.Carry}}</button>
+					<button class="btn btn-sm btn-secondary wrap-margin" (click)="mcService.env.Carry = !mcService.env.Carry">Carry: {{mcService.env.Carry}}</button>
 				</div>
 				<div class="bit" *ngFor="#bit of ArrayOfLength(mcService.env.Bit); #i = index" [ngClass]="{on: IsBitOn(mcService.env.A, i)}"
 					(click)="ToggleBit('A', i)"></div>
