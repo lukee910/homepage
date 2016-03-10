@@ -64,6 +64,9 @@ export class McService {
             if (!statements[i]) {
                 continue;
             }
+            if (statements[i].indexOf(';') === -1) {
+				this.CompileErrorMessage = 'Statement `' + statements[i] + '` is missing a semicolon.';
+            }
 
 			var statement: Statement = null;
 			var hasMissingParam = false;
