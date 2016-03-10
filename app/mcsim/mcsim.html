@@ -35,7 +35,8 @@
 			<label for="rom-length">Length of Program in ROM</label>
 			<div>
 				<input id="rom-length" [(ngModel)]="RomLength" type="number" class="form-control form-control-sm program-length wrap-margin">
-				<button class="btn btn-secondary btn-sm" (click)="ApplyRomLength()"><span *ngIf="RomLength !== mcService.env.RomLength">*</span>Apply</button>
+				<button class="btn btn-secondary btn-sm wrap-margin" (click)="ApplyRomLength()"><span *ngIf="RomLength !== mcService.env.RomLength">*</span>Apply</button>
+                                <div><small>This determines, how long the program in the ROM is. This is so that the remaining 0s won't be executed as statements.</small></div>
 			</div>
 		</div>
 	</div>
