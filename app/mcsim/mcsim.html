@@ -2,12 +2,12 @@
 	<div class="col-xs-12 col-md-4 wrap-margin">
 		<textarea class="form-control form-control-sm" rows="8" [(ngModel)]="CommandsModel" (keypress)="Commands_OnKeyPress($event)"  title="Press Ctrl+Enter to Compile"></textarea>
 	</div>
-	<div class="col-xs-6">
+	<div class="col-xs-12 col-md-6">
 		<div class="row">
 			<div class="col-xs-12 wrap-margin">
 				<button class="btn btn-primary-outline" (click)="SetCommands()">Compile</button>
 			</div>
-			<div class="col-xs-12">
+			<div class="col-xs-12 wrap-margin">
 				<p class="label label-danger" *ngIf="mcService.CompileErrorMessage !== ''">{{mcService.CompileErrorMessage}}</p>
 			</div>
 		</div>
@@ -32,20 +32,22 @@
 		</div>
 		<br>
 		<div>
-			<label for="rom-length">Length of Program in ROM</label>
+			<label for="program-length">Length of Program in ROM</label>
 			<div>
-				<input id="rom-length" [(ngModel)]="RomLength" type="number" class="form-control form-control-sm program-length wrap-margin">
-				<button class="btn btn-secondary btn-sm wrap-margin" (click)="ApplyRomLength()"><span *ngIf="RomLength !== mcService.env.RomLength">*</span>Apply</button>
+				<input id="program-length" [(ngModel)]="RomLength" type="number" class="form-control form-control-sm program-length wrap-margin">
+				<button class="btn btn-secondary btn-sm" (click)="ApplyRomLength()"><span *ngIf="RomLength !== mcService.env.RomLength">*</span>Apply</button>
 				<div><small>This determines how long the program in the ROM is. This is so that the remaining 0s won't be executed as statements.</small></div>
 			</div>
 		</div>
 	</div>
 	<div class="col-xs-6 col-lg-2 wrap-margin-lg">
-		<h3>RAM</h3>
-		<div class="row" *ngFor="#value of mcService.env.RAM; #outerI = index">
-			<div class="col-xs-12">
-				<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(value, i)}"
-					(click)="ToggleBitOfCollection(mcService.env.RAM, outerI, i)"></div>
+		<div *ngIf="mcService.env.RAM.length > 0">
+			<h3>RAM</h3>
+			<div class="row" *ngFor="#value of mcService.env.RAM; #outerI = index">
+				<div class="col-xs-12">
+					<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(value, i)}"
+						(click)="ToggleBitOfCollection(mcService.env.RAM, outerI, i)"></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -96,9 +98,55 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-xs-12 col-md-4">
-		<div *ngFor="#statement of mcService.Statements">
-			<i>{{statement.Id}}</i> - {{statement.Name}}: {{statement.Desc}}
+	<div class="col-xs-12 col-lg-4">
+		<div class="row">
+			<div class="col-xs-12">
+				<div *ngFor="#statement of mcService.Statements">
+					<i>{{statement.Id}}</i> - {{statement.Name}}: {{statement.Desc}}
+				</div>
+			</div>
+			<div class="col-xs-12">
+				<br>
+			</div>
+			<div class="col-xs-12 col-lg-8">
+				<h4>Configure</h4>
+				<div class="row">
+					<div class="col-xs-6">
+						<label for="preset">Select Statement Set</label>
+					</div>
+					<div class="col-xs-6">
+						<select id="preset" class="form-control form-control-sm wrap-margin" (change)="SelectedPresetChanged($event)">
+							<option value="mcsim">MC Sim</option>
+							<option value="demopc">Demo-PC (Work in progress, use with caution)</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<label for="rom-length">ROM Length</label>
+					</div>
+					<div class="col-xs-6">
+						<input id="rom-length" class="form-control form-control-sm wrap-margin" type="number" min="0" [(ngModel)]="config.RomLength">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<label for="ram-length">RAM Length</label>
+					</div>
+					<div class="col-xs-6">
+						<input id="ram-length" class="form-control form-control-sm wrap-margin" type="number" min="0" [(ngModel)]="config.RamLength">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<label for="bit">Word width</label>
+					</div>
+					<div class="col-xs-6">
+						<input id="bit" class="form-control form-control-sm wrap-margin" type="number" min="0" max="8" [(ngModel)]="config.Bit">
+					</div>
+				</div>
+				<button class="btn btn-primary-outline" (click)="ConfigureService()">Apply Configuration</button>
+			</div>
 		</div>
 	</div>
 </div>

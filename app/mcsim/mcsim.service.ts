@@ -5,10 +5,21 @@ import {Statement} from '../model/Statement';
 @Injectable()
 export class McService {
 	public CompileErrorMessage: string = '';
+	public env: McEnvironment = null;
+	public Statements: Statement[] = [];
+	private isInitialized = false;
 
-	constructor(public env: McEnvironment, public Statements: Statement[] = Statement.GetMcSimStatements()) {}
+	public Configure(env: McEnvironment, statements: Statement[]): void {
+		this.env = env;
+		this.Statements = statements;
+		this.isInitialized = true;
+	}
 
 	public Clock(): boolean {
+		if(!this.isInitialized) {
+			return false;
+		}
+
 		var id = this.env.ReadROM();
 		if (id === -1) {
 			return false;
@@ -35,12 +46,26 @@ export class McService {
 	}
 
 	public Compile(code: string): boolean {
+		if (!this.isInitialized) {
+			this.CompileErrorMessage = 'Service not inizialized';
+			return false;
+		}
+
 		this.CompileErrorMessage = '';
 
+		var hasMissingtSemiColon: string = '';
 		var statements: string[] = code.split('\n');
 		statements.forEach(function(value: string, index: number) {
+            if (index !== 0 && value !== '' && value !== 'end' && value.indexOf(';') === -1) {
+				hasMissingtSemiColon = 'Statement `' + value + '` is missing a semicolon.';
+				return;
+            }
 			statements[index] = value.split(';')[0].trim();
 		});
+		if(hasMissingtSemiColon) {
+			this.CompileErrorMessage = hasMissingtSemiColon;
+			return false;
+		}		
 		if (statements[statements.length - 1] !== 'end') {
 			this.CompileErrorMessage = 'End statement missing/invalid.';
 			return false;
@@ -63,9 +88,6 @@ export class McService {
 		for (let i: number = 0; i < statements.length - 1; i++) {
             if (!statements[i]) {
                 continue;
-            }
-            if (statements[i].indexOf(';') === -1) {
-				this.CompileErrorMessage = 'Statement `' + statements[i] + '` is missing a semicolon.';
             }
 
 			var statement: Statement = null;

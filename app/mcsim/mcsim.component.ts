@@ -1,22 +1,43 @@
 import {Component} from 'angular2/core';
 import {McService} from './mcsim.service';
 import {McEnvironment} from '../model/McEnvironment';
-import {McSimConfig} from '../model/McEnvironmentConfig';
+import {DemoPcConfig, McSimConfig, McEnvironmentConfigBuilder} from '../model/McEnvironmentConfig';
 import {Statement} from '../model/Statement';
 import {NgFor, NgIf} from 'angular2/common';
 
 @Component({
-    templateUrl: 'app/mcsim/mcsim.html'
+    templateUrl: 'app/mcsim/mcsim.html',
+    providers: [McService]
 })
 export class McSimComponent {
-	public mcService: McService;
 	public TempCommands: number[] = [];
 	public CommandsModel: string = 'Program _\n\nend';
 	public RomLength: number = 0;
     private compilationResult: boolean;
+    private statements: Statement[] = Statement.GetMcSimStatements();
+    private config = new McEnvironmentConfigBuilder(new McSimConfig());
 
-	constructor() {
-		this.mcService = new McService(new McEnvironment(new McSimConfig()));
+	constructor(public mcService: McService) {
+		this.ConfigureService();
+	}
+
+	public ConfigureService(): void {
+		this.mcService.Configure(new McEnvironment(this.config.Build()), this.statements);
+	}
+
+	public SelectedPresetChanged($event): void {
+		var selectedPreset = $event.target.value;
+		var config: McSimConfig = null;
+		if (selectedPreset === 'mcsim') {
+			config = new McSimConfig();
+			this.statements = Statement.GetMcSimStatements();
+		} else if (selectedPreset === 'demopc') {
+			config = new DemoPcConfig();
+			this.statements = Statement.GetDemoPcStatements();
+		} else {
+			return;
+		}
+		this.config = new McEnvironmentConfigBuilder(config);
 	}
 
 	public SetCommands(): void {

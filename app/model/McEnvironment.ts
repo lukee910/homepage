@@ -13,7 +13,7 @@ export class McEnvironment {
 	public Out: number;
 
 	constructor(public Config: McEnvironmentConfig) {
-		if (Config.Bit() > 24 || Config.Bit() < 0 || Math.floor(Config.Bit()) !== Config.Bit()) {
+		if (Config.Bit() > 8 || Config.Bit() < 0 || Math.floor(Config.Bit()) !== Config.Bit()) {
 			throw `[McEnvrionment.ts:constructor] ${Config.Bit()} is not a valid value for bits.`;
 		}
 		this.Max = Math.pow(2, Config.Bit()) - 1;
