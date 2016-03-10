@@ -68,7 +68,11 @@ export class McEnvironment {
 	}
 
 	public AddToAccumulator(value: number, isA: boolean): void {
-		var result: number = Math.abs((isA ? this.A : this.B) + value);
+		var result: number = (isA ? this.A : this.B) + value;
+		if(result < 0) {
+			alert('Result of the addition is below 0. I have no clue what to do in this situation, so I will just Math.abs() the result.');
+		}
+		result = Math.abs(result);
 		var resultModulo: number = this.GetModulo(result);
 		if(isA) {
 			this.A = resultModulo;
