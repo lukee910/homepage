@@ -19,16 +19,16 @@
 	            <div class="col-xs-12 wrap-margin">
 	                <h4>Save and Load Programs</h4>
 	                <p>You can save/load programs to/from your browsers local storage.</p>
-	                <button class="btn btn-primary-outline" (click)="SaveProgram()">Save as {{GetProgramName()}}</button>
-	                <button class="btn btn-secondary" (click)="SaveProgram(true)">Save and replace {{GetProgramName()}}</button>
+	                <button class="wrap-margin btn btn-primary-outline" (click)="SaveProgram()">Save as {{GetProgramName()}}</button>
+	                <button class="wrap-margin btn btn-secondary" (click)="SaveProgram(true)">Save and replace {{GetProgramName()}}</button>
 	                <label *ngIf="programSaveResult !== ''" class="label label-danger">{{programSaveResult}}</label>
 	            </div>
 	            <div class="col-xs-12">
-	                <select class="form-control form-control-sm width-200" [(ngModel)]="selectedProgram">
+	                <select class="wrap-margin form-control form-control-sm width-200" [(ngModel)]="selectedProgram">
 	                    <option *ngFor="#program of programs" [value]="program.Name" [title]="program.Program">{{program.Name}}</option>
 	                </select>
-	                <button class="btn btn-sm btn-secondary" (click)="LoadProgram()">Load Program</button>
-	                <button class="btn btn-sm btn-danger-outline" (click)="RemoveProgram()">Remove Selected Program</button>
+	                <button class="wrap-margin btn btn-sm btn-secondary" (click)="LoadProgram()">Load Program</button>
+	                <button class="wrap-margin btn btn-sm btn-danger-outline" (click)="RemoveProgram()">Remove Selected Program</button>
 	            </div>
 	        </div>
 		</div>
