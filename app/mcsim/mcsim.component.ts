@@ -68,7 +68,7 @@ export class McSimComponent implements OnInit {
     private LoadLocalStoragePrograms(): void {
         var programs = JSON.parse(localStorage.getItem('mcsim.programs'));
         this.programs = <Program[]> programs || [];
-        this.selectedProgram = programs.length > 0 ? programs[0].Name : '';
+        this.selectedProgram = this.programs.length > 0 ? this.programs[0].Name : '';
     }
     
     private SaveLocalStoragePrograms(): void {
