@@ -1,8 +1,9 @@
 import {Component} from 'angular2/core';
-import {M307Component} from './components/m307/m307';
-import {M105Component} from './components/m105/m105';
-import {HomeComponent} from './components/home/home';
-import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
+import {M307Component} from './m307/m307.component';
+import {M105Component} from './m105/m105.component';
+import {McSimComponent} from './mcsim/mcsim.component';
+import {HomeComponent} from './home/home.component';
+import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Location} from 'angular2/router';
 
 @Component({
     selector: 'homepage',
@@ -23,11 +24,26 @@ import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router'
     name: 'M105',
     component: M105Component
 }, {
+    path: '/mcsim',
+    name: 'MC Sim',
+    component: McSimComponent
+}, {
     path: '/',
     name: 'Home',
     component: HomeComponent,
     useAsDefault: true
 }])
 export class AppComponent {
-    public activeRoute: string;
+    constructor(private location: Location) { }
+
+    public HasActiveRoute(routes: string[]): boolean {
+        var location = this.location;
+        var hasRoute = false;
+        routes.forEach(function (value: string) {
+            if(location.path() === value){
+                hasRoute = true;
+            }
+        });
+        return hasRoute;
+    }
 }

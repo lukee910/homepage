@@ -1,5 +1,6 @@
 body {
     padding-top: 65px;
+    padding-bottom: 30px;
 }
 
 /*
@@ -11,15 +12,30 @@ body {
 .nav.nav-pills .nav-link {
 	cursor: pointer;
 	color: #373a3c;
-	border-color: #ccc;
-	border-width: 1px;
-	border-style: solid;
+    border: 1px solid #ccc;
 }
 
 .nav.nav-pills .nav-link.active {
 	background-color: #373a3c;
 	border-color: #373a3c;
 	color: white;
+}
+
+.wrap-margin {
+    margin-bottom: 5px;
+}
+
+.wrap-margin-lg {
+    margin-bottom: 15px;
+}
+
+.navbar-dark .nav-link.router-link-active,
+.navbar-dark .nav-link.router-link-active:focus {
+    color: white;
+}
+
+.btn-secondary:not(.btn-danger-outline):not(.btn-success-outline) {
+    border-color: #373a3c;
 }
 
 /*
@@ -70,4 +86,37 @@ body {
 
 .frame-fullscreen .frame-button-nav {
 	padding: 0 30px;
+}
+
+/*
+	====================================
+    MC Sim
+	====================================
+*/
+.program-length {
+	width: 70px;
+	display: inline-block;
+}
+
+.bit-counter,
+.bit {
+	height: 20px;
+	width: 20px;
+	background: white;
+	border: 1px solid black;
+	margin: 5px;
+	display: inline-block;
+}
+
+.bit-counter:not(.finished),
+.bit.on {
+	background: black;
+}
+
+.bit-counter.finished {
+	border-color: #5bc0de;
+}
+
+.bit-col {
+	height: 30px;
 }

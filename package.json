@@ -19,7 +19,10 @@
     "tsc:w": "tsc -w",
     "lite": "lite-server",
     "typings": "typings",
-    "postinstall": "typings install"
+    "postinstall": "typings install",
+    "build": "concurrently \"npm install\" \"npm run tsc @tsbuild.txt\"",
+    "build:win": "npm run build && del /S \".dist\\*.map\"",
+    "build:linux": "concurrently \"npm run build\" \"find ./.dist -name '*.map' -delete\""
   },
   "dependencies": {
     "angular2": "2.0.0-beta.7",

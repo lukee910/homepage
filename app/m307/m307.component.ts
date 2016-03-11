@@ -1,12 +1,11 @@
 import {Component} from 'angular2/core';
-import {Route} from '../../model/Route';
-import {NgClass, NgIf} from 'angular2/common';
+import {Route} from '../model/Route';
+import {NgClass} from 'angular2/common';
 
 @Component({
-    templateUrl: 'app/components/m307/m307.html',
+    templateUrl: 'app/m307/m307.html',
     directives: [
-    	NgClass,
-    	NgIf
+    	NgClass
     ]
 })
 export class M307Component {
