@@ -16,7 +16,9 @@ export class McSimComponent implements OnInit {
     private compilationResult: boolean;
     private statements: Statement[] = Statement.GetMcSimStatements();
     private config = new McEnvironmentConfigBuilder(new McSimConfig());
+    private selectedProgram: string;
     private programs: Program[] = [];
+    private programSaveResult: string = '';
 
 	constructor(public mcService: McService) {
 		this.ConfigureService();
@@ -65,17 +67,74 @@ export class McSimComponent implements OnInit {
     
     private LoadLocalStoragePrograms(): void {
         var programs = JSON.parse(localStorage.getItem('mcsim.programs'));
-        this.programs = <Program[]> programs;
+        this.programs = <Program[]> programs || [];
+        this.selectedProgram = programs.length > 0 ? programs[0].Name : '';
     }
     
     private SaveLocalStoragePrograms(): void {
-        
+        localStorage.setItem('mcsim.programs', JSON.stringify(this.programs));
+        this.selectedProgram = this.programs.length > 0 ? this.programs[0].Name : '';
+    }
+
+    private SaveProgram(overwrite: boolean = false): void {
+		var nameAlreadyExists = false;
+		var name = this.GetProgramName();
+		this.programs.forEach(function (value: Program) {
+			if(value.Name === name) {
+				nameAlreadyExists = true;
+			}
+		});
+		if (nameAlreadyExists) {
+			if (!overwrite) {
+				this.programSaveResult = 'Program already exists';
+				return;
+			} else {
+				this.RemoveProgram(name);
+			}
+		}
+		this.programSaveResult = '';
+		this.programs.push({
+			Name: name,
+			Program: this.CommandsModel
+		});
+		this.SaveLocalStoragePrograms();
+    }
+
+    private LoadProgram(name: string = this.selectedProgram): void {
+		var setProgram = (program: Program) => {
+			this.CommandsModel = program.Program;
+		};
+    	this.programs.forEach(function (value: Program) {
+    		if(value.Name === name) {
+				setProgram(value);
+    		}
+    	});
+		this.programSaveResult = '';
+    }
+
+    private RemoveProgram(name: string = this.selectedProgram): void {
+		var programs: Program[] = [];
+		this.programs.forEach(function (value) {
+			if (name !== value.Name) {
+				programs.push(value);
+			}
+		});
+		this.programs = programs;
+		this.SaveLocalStoragePrograms();
+		this.programSaveResult = '';
     }
 
 	private Commands_OnKeyPress($event: KeyboardEvent) {
-		if ($event.ctrlKey && ($event.keyCode === 13 || $event.keyCode === 10)) {
-			this.SetCommands();
-			$event.stopPropagation();
+		if ($event.ctrlKey && $event.keyCode !== 17) {
+			if ($event.keyCode === 13 || $event.keyCode === 10) {
+				this.SetCommands();
+				$event.stopPropagation();
+				return false;
+			} else if ($event.keyCode === 82 || $event.keyCode === 83) {
+				this.SaveProgram($event.keyCode === 82 ? true : false);
+				$event.stopPropagation();
+				return false;
+			}
 		}
 	}
 

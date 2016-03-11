@@ -1,168 +1,174 @@
-<div class="row">
-	<div class="col-xs-12 col-md-4 wrap-margin">
-		<textarea class="form-control form-control-sm" rows="8" [(ngModel)]="CommandsModel" (keypress)="Commands_OnKeyPress($event)"  title="Press Ctrl+Enter to Compile"></textarea>
-	</div>
-	<div class="col-xs-12 col-md-6">
-		<div class="row wrap-margin">
-			<div class="col-xs-12 wrap-margin">
-				<button class="btn btn-primary-outline" (click)="SetCommands()">Compile</button>
-			</div>
-			<div class="col-xs-12 wrap-margin">
-				<p class="label label-danger" *ngIf="mcService.CompileErrorMessage !== ''">{{mcService.CompileErrorMessage}}</p>
-			</div>
+<div (keydown)="Commands_OnKeyPress($event)">
+	<div class="row">
+		<div class="col-xs-12 col-md-4 wrap-margin">
+			<textarea class="form-control form-control-sm" rows="8" [(ngModel)]="CommandsModel"  title="Press Ctrl+Enter to Compile"></textarea>
+			<p>
+				<small>Shortcuts: Ctrl+Enter to compile, Ctrl+S to Save and Ctrl+R to Save and replace</small>
+			</p>
 		</div>
-        <div class="row">
-            <div class="col-xs-12 wrap-margin">
-                <h4>Save and Load Programs (Not working yet)</h4>
-                <p>You can save/load programs to/from your browsers localStorage. 
-                    Those programs will be available at any time in only this browser on this computer instance.</p>
-                <button class="btn btn-primary-outline">Save as {{GetProgramName()}}</button>
-            </div>
-            <div class="col-xs-12">
-                <select class="form-control form-control-sm width-200">
-                    <option *ngFor="#program of programs" [value]="program.Name">{{program.Name}}</option>
-                </select>
-                <button class="btn btn-sm btn-secondary">Load Program</button>
-                <button class="btn btn-sm btn-danger-outline">Remove Selected Program</button>
-            </div>
-        </div>
-	</div>
-</div>
-<br>
-<div class="row">
-	<div class="col-xs-12">
-		<button class="btn btn-primary-outline wrap-margin" (click)="mcService.Clock()" [disabled]="mcService.env.ProgramFinished()">Clock</button>
-		<button class="btn btn-secondary wrap-margin" (click)="Reset()">Reset</button>
-	</div>
-</div>
-<div class="row">
-	<div class="col-xs-6 col-lg-2 wrap-margin-lg">
-		<h3>ROM</h3>
-		<div class="row" *ngFor="#value of mcService.env.ROM; #outerI = index">
-			<div class="col-xs-12 bit-col">
-				<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(value, i)}"
-					(click)="ToggleBitOfCollection(mcService.env.ROM, outerI, i)">
-                    </div><div class="bit-counter" *ngIf="mcService.env.ProgramCounter === outerI" [ngClass]="{'finished': mcService.env.ProgramFinished()}"></div>
-                    <!-- This formatting has to be like that, because HTML formatting sucks -->
+		<div class="col-xs-12 col-md-6">
+			<div class="row wrap-margin">
+				<div class="col-xs-12 wrap-margin">
+					<button class="btn btn-primary-outline" (click)="SetCommands()">Compile</button>
+				</div>
+				<div class="col-xs-12 wrap-margin">
+					<p class="label label-danger" *ngIf="mcService.CompileErrorMessage !== ''">{{mcService.CompileErrorMessage}}</p>
+				</div>
 			</div>
-		</div>
-		<br>
-		<div>
-			<label for="program-length">Length of Program in ROM</label>
-			<div>
-				<input id="program-length" [(ngModel)]="RomLength" type="number" max="{{mcService.env.Config.RomLength()}}" min="0" 
-                    class="form-control form-control-sm program-length wrap-margin">
-				<button class="btn btn-secondary btn-sm" (click)="ApplyRomLength()"><span *ngIf="RomLength !== mcService.env.RomLength">*</span>Apply</button>
-				<div><small>This determines how long the program in the ROM is. This is so that the remaining 0s won't be executed as statements.</small></div>
-			</div>
+	        <div class="row">
+	            <div class="col-xs-12 wrap-margin">
+	                <h4>Save and Load Programs</h4>
+	                <p>You can save/load programs to/from your browsers local storage.</p>
+	                <button class="btn btn-primary-outline" (click)="SaveProgram()">Save as {{GetProgramName()}}</button>
+	                <button class="btn btn-secondary" (click)="SaveProgram(true)">Save and replace {{GetProgramName()}}</button>
+	                <label *ngIf="programSaveResult !== ''" class="label label-danger">{{programSaveResult}}</label>
+	            </div>
+	            <div class="col-xs-12">
+	                <select class="form-control form-control-sm width-200" [(ngModel)]="selectedProgram">
+	                    <option *ngFor="#program of programs" [value]="program.Name" [title]="program.Program">{{program.Name}}</option>
+	                </select>
+	                <button class="btn btn-sm btn-secondary" (click)="LoadProgram()">Load Program</button>
+	                <button class="btn btn-sm btn-danger-outline" (click)="RemoveProgram()">Remove Selected Program</button>
+	            </div>
+	        </div>
 		</div>
 	</div>
-	<div class="col-xs-6 col-lg-2 wrap-margin-lg">
-		<div *ngIf="mcService.env.RAM.length > 0">
-			<h3>RAM</h3>
-			<div class="row" *ngFor="#value of mcService.env.RAM; #outerI = index">
-				<div class="col-xs-12">
+	<br>
+	<div class="row">
+		<div class="col-xs-12">
+			<button class="btn btn-primary-outline wrap-margin" (click)="mcService.Clock()" [disabled]="mcService.env.ProgramFinished()">Clock</button>
+			<button class="btn btn-secondary wrap-margin" (click)="Reset()">Reset</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6 col-lg-2 wrap-margin-lg">
+			<h3>ROM</h3>
+			<div class="row" *ngFor="#value of mcService.env.ROM; #outerI = index">
+				<div class="col-xs-12 bit-col">
 					<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(value, i)}"
-						(click)="ToggleBitOfCollection(mcService.env.RAM, outerI, i)"></div>
+						(click)="ToggleBitOfCollection(mcService.env.ROM, outerI, i)">
+	                    </div><div class="bit-counter" *ngIf="mcService.env.ProgramCounter === outerI" [ngClass]="{'finished': mcService.env.ProgramFinished()}"></div>
+	                    <!-- This formatting has to be like that, because HTML formatting sucks -->
 				</div>
 			</div>
-		</div>
-	</div>
-	<div class="col-xs-12 col-md-4 wrap-margin-lg">
-		<div class="row wrap-margin-lg">
-			<div class="col-xs-12">
-				<h3>In</h3>
-				<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(mcService.env.In, i)}"
-					(click)="ToggleBit('In', i)"></div>
-			</div>
-		</div>
-		<div class="row wrap-margin-lg">
-			<div class="col-xs-12">
-				<h3>Out</h3>
-				<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(mcService.env.Out, i)}"
-					(click)="ToggleBit('Out', i)"></div>
-			</div>
-		</div>
-		<div class="row wrap-margin-lg">
-			<div class="col-xs-12">
-				<h3>Accumulator A</h3>
+			<br>
+			<div>
+				<label for="program-length">Length of Program in ROM</label>
 				<div>
-					<button class="btn btn-sm btn-secondary wrap-margin" (click)="mcService.env.Carry = !mcService.env.Carry">Carry: {{mcService.env.Carry}}</button>
+					<input id="program-length" [(ngModel)]="RomLength" type="number" max="{{mcService.env.Config.RomLength()}}" min="0" 
+	                    class="form-control form-control-sm program-length wrap-margin">
+					<button class="btn btn-secondary btn-sm" (click)="ApplyRomLength()"><span *ngIf="RomLength !== mcService.env.RomLength">*</span>Apply</button>
+					<div><small>This determines how long the program in the ROM is. This is so that the remaining 0s won't be executed as statements.</small></div>
 				</div>
-				<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(mcService.env.A, i)}"
-					(click)="ToggleBit('A', i)"></div>
 			</div>
 		</div>
-		<div class="row wrap-margin-lg">
-			<div class="col-xs-12">
-				<h3>Accumulator B</h3>
-				<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(mcService.env.B, i)}"
-					(click)="ToggleBit('B', i)"></div>
-			</div>
-		</div>
-		<div class="row wrap-margin-lg">
-			<div class="col-xs-12">
-				<h3>ProgramCounter</h3>
-				<div class="wrap-margin">
-					<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(mcService.env.ProgramCounter, i)}"
-						(click)="ToggleBit('ProgramCounter', i)"></div>
-				</div>
-				<div class="row">
+		<div class="col-xs-6 col-lg-2 wrap-margin-lg">
+			<div *ngIf="mcService.env.RAM.length > 0">
+				<h3>RAM</h3>
+				<div class="row" *ngFor="#value of mcService.env.RAM; #outerI = index">
 					<div class="col-xs-12">
-						<span class="label label-info" *ngIf="mcService.env.ProgramFinished()">End of Program</span>
+						<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(value, i)}"
+							(click)="ToggleBitOfCollection(mcService.env.RAM, outerI, i)"></div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-xs-12 col-lg-4">
-		<div class="row">
-			<div class="col-xs-12">
-				<div *ngFor="#statement of mcService.Statements">
-					<i>{{statement.Id}}</i> - {{statement.Name}}: {{statement.Desc}}
+		<div class="col-xs-12 col-md-4 wrap-margin-lg">
+			<div class="row wrap-margin-lg">
+				<div class="col-xs-12">
+					<h3>In</h3>
+					<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(mcService.env.In, i)}"
+						(click)="ToggleBit('In', i)"></div>
 				</div>
 			</div>
-			<div class="col-xs-12">
-				<br>
+			<div class="row wrap-margin-lg">
+				<div class="col-xs-12">
+					<h3>Out</h3>
+					<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(mcService.env.Out, i)}"
+						(click)="ToggleBit('Out', i)"></div>
+				</div>
 			</div>
-			<div class="col-xs-12 col-lg-8">
-				<h4>Configure</h4>
-				<div class="row">
-					<div class="col-xs-6">
-						<label for="preset">Select Statement Set</label>
+			<div class="row wrap-margin-lg">
+				<div class="col-xs-12">
+					<h3>Accumulator A</h3>
+					<div>
+						<button class="btn btn-sm btn-secondary wrap-margin" (click)="mcService.env.Carry = !mcService.env.Carry">Carry: {{mcService.env.Carry}}</button>
 					</div>
-					<div class="col-xs-6">
-						<select id="preset" class="form-control form-control-sm wrap-margin" (change)="SelectedPresetChanged($event)">
-							<option value="mcsim">MC Sim</option>
-							<option value="demopc">Demo-PC (Work in progress, use with caution)</option>
-						</select>
+					<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(mcService.env.A, i)}"
+						(click)="ToggleBit('A', i)"></div>
+				</div>
+			</div>
+			<div class="row wrap-margin-lg">
+				<div class="col-xs-12">
+					<h3>Accumulator B</h3>
+					<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(mcService.env.B, i)}"
+						(click)="ToggleBit('B', i)"></div>
+				</div>
+			</div>
+			<div class="row wrap-margin-lg">
+				<div class="col-xs-12">
+					<h3>ProgramCounter</h3>
+					<div class="wrap-margin">
+						<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(mcService.env.ProgramCounter, i)}"
+							(click)="ToggleBit('ProgramCounter', i)"></div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<span class="label label-info" *ngIf="mcService.env.ProgramFinished()">End of Program</span>
+						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-xs-6">
-						<label for="rom-length">ROM Length</label>
-					</div>
-					<div class="col-xs-6">
-						<input id="rom-length" class="form-control form-control-sm wrap-margin" type="number" min="0" [(ngModel)]="config.RomLength">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-6">
-						<label for="ram-length">RAM Length</label>
-					</div>
-					<div class="col-xs-6">
-						<input id="ram-length" class="form-control form-control-sm wrap-margin" type="number" min="0" [(ngModel)]="config.RamLength">
+			</div>
+		</div>
+		<div class="col-xs-12 col-lg-4">
+			<div class="row">
+				<div class="col-xs-12">
+					<div *ngFor="#statement of mcService.Statements">
+						<i>{{statement.Id}}</i> - {{statement.Name}}: {{statement.Desc}}
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-xs-6">
-						<label for="bit">Word width</label>
-					</div>
-					<div class="col-xs-6">
-						<input id="bit" class="form-control form-control-sm wrap-margin" type="number" min="0" max="8" [(ngModel)]="config.Bit">
-					</div>
+				<div class="col-xs-12">
+					<br>
 				</div>
-				<button class="btn btn-primary-outline" (click)="ConfigureService()">Apply Configuration</button>
+				<div class="col-xs-12 col-lg-8">
+					<h4>Configure</h4>
+					<div class="row">
+						<div class="col-xs-6">
+							<label for="preset">Select Statement Set</label>
+						</div>
+						<div class="col-xs-6">
+							<select id="preset" class="form-control form-control-sm wrap-margin" (change)="SelectedPresetChanged($event)">
+								<option value="mcsim">MC Sim</option>
+								<option value="demopc">Demo-PC (Work in progress, use with caution)</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-6">
+							<label for="rom-length">ROM Length</label>
+						</div>
+						<div class="col-xs-6">
+							<input id="rom-length" class="form-control form-control-sm wrap-margin" type="number" min="0" [(ngModel)]="config.RomLength">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-6">
+							<label for="ram-length">RAM Length</label>
+						</div>
+						<div class="col-xs-6">
+							<input id="ram-length" class="form-control form-control-sm wrap-margin" type="number" min="0" [(ngModel)]="config.RamLength">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-6">
+							<label for="bit">Word width</label>
+						</div>
+						<div class="col-xs-6">
+							<input id="bit" class="form-control form-control-sm wrap-margin" type="number" min="0" max="8" [(ngModel)]="config.Bit">
+						</div>
+					</div>
+					<button class="btn btn-primary-outline" (click)="ConfigureService()">Apply Configuration</button>
+				</div>
 			</div>
 		</div>
 	</div>
