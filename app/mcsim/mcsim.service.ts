@@ -66,7 +66,7 @@ export class McService {
 			this.CompileErrorMessage = hasMissingtSemiColon;
 			return false;
 		}		
-		if (statements[statements.length - 1] !== 'end') {
+		if (statements[statements.length - 1] !== 'END') {
 			this.CompileErrorMessage = 'End statement missing/invalid.';
 			return false;
 		}
