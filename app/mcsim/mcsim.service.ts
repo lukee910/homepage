@@ -54,7 +54,7 @@ export class McService {
 		this.CompileErrorMessage = '';
 
 		var hasMissingtSemiColon: string = '';
-		var statements: string[] = code.trim().split('\n');
+		var statements: string[] = code.toUpperCase().trim().split('\n');
 		statements.forEach(function(value: string, index: number) {
             if (index !== 0 && value !== '' && value !== 'end' && value.indexOf(';') === -1) {
 				hasMissingtSemiColon = 'Statement `' + value + '` is missing a semicolon.';
