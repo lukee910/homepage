@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component, OnInit} from 'angular2/core';
 import {McService} from './mcsim.service';
 import {McEnvironment} from '../model/McEnvironment';
 import {DemoPcConfig, McSimConfig, McEnvironmentConfigBuilder} from '../model/McEnvironmentConfig';
@@ -9,17 +9,22 @@ import {NgFor, NgIf} from 'angular2/common';
     templateUrl: 'app/mcsim/mcsim.html',
     providers: [McService]
 })
-export class McSimComponent {
+export class McSimComponent implements OnInit {
 	public TempCommands: number[] = [];
 	public CommandsModel: string = 'Program _\n\nend';
 	public RomLength: number = 0;
     private compilationResult: boolean;
     private statements: Statement[] = Statement.GetMcSimStatements();
     private config = new McEnvironmentConfigBuilder(new McSimConfig());
+    private programs: Program[] = [];
 
 	constructor(public mcService: McService) {
 		this.ConfigureService();
 	}
+    
+    ngOnInit() {
+        this.LoadLocalStoragePrograms();
+    }
 
 	public ConfigureService(): void {
 		this.mcService.Configure(new McEnvironment(this.config.Build()), this.statements);
@@ -45,6 +50,27 @@ export class McSimComponent {
 		this.compilationResult = !!this.mcService.Compile(this.CommandsModel);
         this.RomLength = this.mcService.env.RomLength;
 	}
+    
+    private GetProgramName(): string {
+        var line = this.CommandsModel.split('\n')[0].trim().split(' ');
+        var notEmptyCounter = 0;
+        var programName = '';
+        line.forEach(function(value) {
+            if(value !== '' && notEmptyCounter++ === 1) {
+                programName = value;
+            }
+        });
+        return programName;
+    }
+    
+    private LoadLocalStoragePrograms(): void {
+        var programs = JSON.parse(localStorage.getItem('mcsim.programs'));
+        this.programs = <Program[]> programs;
+    }
+    
+    private SaveLocalStoragePrograms(): void {
+        
+    }
 
 	private Commands_OnKeyPress($event: KeyboardEvent) {
 		if ($event.ctrlKey && ($event.keyCode === 13 || $event.keyCode === 10)) {
@@ -109,4 +135,9 @@ export class McSimComponent {
 	private CorrectPosition(position: number): number {
 		return this.mcService.env.Config.Bit() - 1 - position;
 	}
+}
+
+interface Program {
+    Name: string;
+    Program: string;
 }

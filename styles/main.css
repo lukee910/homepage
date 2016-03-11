@@ -38,6 +38,11 @@ body {
     border-color: #373a3c;
 }
 
+.width-200 {
+    width: 200px;
+    display: inline-block;
+}
+
 /*
 	====================================
     M307 IFrame
@@ -115,8 +120,4 @@ body {
 
 .bit-counter.finished {
 	border-color: #5bc0de;
-}
-
-.bit-col {
-	
 }

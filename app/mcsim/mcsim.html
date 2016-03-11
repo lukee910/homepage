@@ -3,7 +3,7 @@
 		<textarea class="form-control form-control-sm" rows="8" [(ngModel)]="CommandsModel" (keypress)="Commands_OnKeyPress($event)"  title="Press Ctrl+Enter to Compile"></textarea>
 	</div>
 	<div class="col-xs-12 col-md-6">
-		<div class="row">
+		<div class="row wrap-margin">
 			<div class="col-xs-12 wrap-margin">
 				<button class="btn btn-primary-outline" (click)="SetCommands()">Compile</button>
 			</div>
@@ -11,6 +11,21 @@
 				<p class="label label-danger" *ngIf="mcService.CompileErrorMessage !== ''">{{mcService.CompileErrorMessage}}</p>
 			</div>
 		</div>
+        <div class="row">
+            <div class="col-xs-12 wrap-margin">
+                <h4>Save and Load Programs</h4>
+                <p>You can save/load programs to/from your browsers localStorage. 
+                    Those programs will be available at any time in only this browser on this computer instance.</p>
+                <button class="btn btn-primary-outline">Save as {{GetProgramName()}}</button>
+            </div>
+            <div class="col-xs-12">
+                <select class="form-control form-control-sm width-200">
+                    <option *ngFor="#program of programs" [value]="program.Name">{{program.Name}}</option>
+                </select>
+                <button class="btn btn-sm btn-secondary">Load Program</button>
+                <button class="btn btn-sm btn-danger-outline">Remove Selected Program</button>
+            </div>
+        </div>
 	</div>
 </div>
 <br>
