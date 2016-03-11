@@ -119,6 +119,25 @@ export class McService {
                 program.push(param);
             }
 		}
-		return this.env.SetROM(program);
+		if (this.env.SetROM(program)) {
+            return true;
+        } else {
+            this.CompileErrorMessage = 'Unable to write program to ROM. ';
+            if(program.length > this.env.Config.RomLength()) {
+                this.CompileErrorMessage += 'Program is too long.';
+            } else {
+                var max = this.env.Max;
+                var hasTooLong = false;
+                program.forEach(function(value: number, index: number) {
+                    if(value > max) {
+                        hasTooLong = true;
+                    }
+                });
+                if(hasTooLong) {
+                    this.CompileErrorMessage += 'A value given as parameter is longer than the maximum. (' + max + ')';
+                }
+            }
+            return false;
+        }
 	}
 }

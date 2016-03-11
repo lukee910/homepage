@@ -6,43 +6,43 @@ export class Statement {
 	public static GetDemoPcStatements(): Statement[] {
 		var ret: Statement[] = [];
 		// ADDA value
-		ret.push(new Statement('ADDA #', 'Add value to A', 139, true, (env: McEnvironment, param: number) => {
+		ret.push(new Statement('ADDA #', '(8B hex) Add value to A', 139, true, (env: McEnvironment, param: number) => {
 			env.SetAccumulator(param, true);
 		}));
 		// ADDA memory
-		ret.push(new Statement('ADDA', 'Add value from memory to A', 139, true, (env: McEnvironment, param: number) => {
+		ret.push(new Statement('ADDA', '(9B hex) Add value from memory to A', 155, true, (env: McEnvironment, param: number) => {
 			if (param >= env.ROM.length || param < 0) {
 				return;
 			}
 			env.SetAccumulator(env.ROM[param], true);
 		}));
 		// JCC
-		ret.push(new Statement('JCC', 'Jump if Carry clear => Carry == 0', 84, true, (env: McEnvironment, param: number) => {
+		ret.push(new Statement('JCC', '(54 hex) Jump if Carry clear => Carry == 0', 84, true, (env: McEnvironment, param: number) => {
 			if (param > env.ROM.length || param < 0 || env.Carry) {
 				return;
 			}
 			env.ProgramCounter = param;
 		}));
 		// JCS
-		ret.push(new Statement('JCS', 'Jump if Carry set => Carry == 1', 85, true, (env: McEnvironment, param: number) => {
+		ret.push(new Statement('JCS', '(55 hex) Jump if Carry set => Carry == 1', 85, true, (env: McEnvironment, param: number) => {
 			if (param > env.ROM.length || param < 0 || !env.Carry) {
 				return;
 			}
 			env.ProgramCounter = param;
 		}));
 		// JMP
-		ret.push(new Statement('JMP', 'Jump to statement.', 126, true, (env: McEnvironment, param: number) => {
+		ret.push(new Statement('JMP', '(7E hex) Jump to statement.', 126, true, (env: McEnvironment, param: number) => {
 			if (param >= env.ROM.length || param < 0) {
 				return;
 			}
 			env.ProgramCounter = param;
 		}));
 		// LDAA value
-		ret.push(new Statement('LDAA #', 'Load Accumulator A with value.', 134, true, (env: McEnvironment, param: number) => {
+		ret.push(new Statement('LDAA #', '(86 hex) Load Accumulator A with value.', 134, true, (env: McEnvironment, param: number) => {
 			env.SetAccumulator(param, true);
 		}));
 		// LDAA memory
-		ret.push(new Statement('LDAA', 'Load Accumulator A with value from memory.', 150, true, (env: McEnvironment, param: number) => {
+		ret.push(new Statement('LDAA', '(96 hex) Load Accumulator A with value from memory.', 150, true, (env: McEnvironment, param: number) => {
 			if (param >= env.ROM.length || param < 0) {
 				return;
 			}

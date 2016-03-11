@@ -26,15 +26,17 @@
 		<div class="row" *ngFor="#value of mcService.env.ROM; #outerI = index">
 			<div class="col-xs-12 bit-col">
 				<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(value, i)}"
-					(click)="ToggleBitOfCollection(mcService.env.ROM, outerI, i)"></div>
-				<div class="bit-counter" *ngIf="mcService.env.ProgramCounter === outerI" [ngClass]="{'finished': mcService.env.ProgramFinished()}"></div>
+					(click)="ToggleBitOfCollection(mcService.env.ROM, outerI, i)">
+                    </div><div class="bit-counter" *ngIf="mcService.env.ProgramCounter === outerI" [ngClass]="{'finished': mcService.env.ProgramFinished()}"></div>
+                    <!-- This formatting has to be like that, because HTML formatting sucks -->
 			</div>
 		</div>
 		<br>
 		<div>
 			<label for="program-length">Length of Program in ROM</label>
 			<div>
-				<input id="program-length" [(ngModel)]="RomLength" type="number" class="form-control form-control-sm program-length wrap-margin">
+				<input id="program-length" [(ngModel)]="RomLength" type="number" max="{{mcService.env.Config.RomLength()}}" min="0" 
+                    class="form-control form-control-sm program-length wrap-margin">
 				<button class="btn btn-secondary btn-sm" (click)="ApplyRomLength()"><span *ngIf="RomLength !== mcService.env.RomLength">*</span>Apply</button>
 				<div><small>This determines how long the program in the ROM is. This is so that the remaining 0s won't be executed as statements.</small></div>
 			</div>
