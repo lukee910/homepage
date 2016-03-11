@@ -4,5 +4,4 @@ app/**/*.js
 app/**/*.map
 .idea/
 *.log
-.vscode/
 .dist/
