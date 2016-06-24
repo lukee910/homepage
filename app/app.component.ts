@@ -4,6 +4,7 @@ import {M105Component} from './m105/m105.component';
 import {McSimComponent} from './mcsim/mcsim.component';
 import {HomeComponent} from './home/home.component';
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Location} from 'angular2/router';
+import {McSimHelpComponent} from "./mcsim/mcsim.help";
 
 @Component({
     selector: 'homepage',
@@ -27,6 +28,10 @@ import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Location} from 'angula
     path: '/mcsim',
     name: 'MC Sim',
     component: McSimComponent
+}, {
+    path: '/mcsimhelp',
+    name: 'MC Sim Help',
+    component: McSimHelpComponent
 }, {
     path: '/',
     name: 'Home',

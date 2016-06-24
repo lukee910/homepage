@@ -3,10 +3,11 @@ import {McService} from './mcsim.service';
 import {McEnvironment} from '../model/McEnvironment';
 import {DemoPcConfig, McSimConfig, McEnvironmentConfigBuilder} from '../model/McEnvironmentConfig';
 import {Statement} from '../model/Statement';
-import {NgFor, NgIf} from 'angular2/common';
+import {ROUTER_DIRECTIVES} from 'angular2/router';
 
 @Component({
     templateUrl: 'app/mcsim/mcsim.html',
+	directives: [ROUTER_DIRECTIVES],
     providers: [McService]
 })
 export class McSimComponent implements OnInit {
