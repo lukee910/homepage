@@ -26,7 +26,7 @@
 	            </div>
 	            <div class="col-xs-12">
 	                <select class="wrap-margin form-control form-control-sm width-200" [(ngModel)]="selectedProgram">
-	                    <option *ngFor="#program of programs" [value]="program.Name" [title]="program.Program">{{program.Name}}</option>
+	                    <option *ngFor="let program of programs" [value]="program.Name" [title]="program.Program">{{program.Name}}</option>
 	                </select>
 	                <button class="wrap-margin btn btn-sm btn-secondary" (click)="LoadProgram()">Load Program</button>
 	                <button class="wrap-margin btn btn-sm btn-danger-outline" (click)="RemoveProgram()">Remove Selected Program</button>
@@ -44,9 +44,9 @@
 	<div class="row">
 		<div class="col-xs-6 col-lg-2 wrap-margin-lg">
 			<h3>ROM</h3>
-			<div class="row" *ngFor="#value of mcService.env.ROM; #outerI = index">
+			<div class="row" *ngFor="let value of mcService.env.ROM; let outerI = index">
 				<div class="col-xs-12 bit-col">
-					<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(value, i)}"
+					<div class="bit" *ngFor="let bit of ArrayOfLength(); let i = index" [ngClass]="{on: IsBitOn(value, i)}"
 						(click)="ToggleBitOfCollection(mcService.env.ROM, outerI, i)">
 	                    </div><div class="bit-counter" *ngIf="mcService.env.ProgramCounter === outerI" [ngClass]="{'finished': mcService.env.ProgramFinished()}"></div>
 	                    <!-- This formatting has to be like that, because HTML formatting sucks -->
@@ -66,9 +66,9 @@
 		<div class="col-xs-6 col-lg-2 wrap-margin-lg">
 			<div *ngIf="mcService.env.RAM.length > 0">
 				<h3>RAM</h3>
-				<div class="row" *ngFor="#value of mcService.env.RAM; #outerI = index">
+				<div class="row" *ngFor="let value of mcService.env.RAM; let outerI = index">
 					<div class="col-xs-12">
-						<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(value, i)}"
+						<div class="bit" *ngFor="let bit of ArrayOfLength(); let i = index" [ngClass]="{on: IsBitOn(value, i)}"
 							(click)="ToggleBitOfCollection(mcService.env.RAM, outerI, i)"></div>
 					</div>
 				</div>
@@ -78,14 +78,14 @@
 			<div class="row wrap-margin-lg">
 				<div class="col-xs-12">
 					<h3>In</h3>
-					<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(mcService.env.In, i)}"
+					<div class="bit" *ngFor="let bit of ArrayOfLength(); let i = index" [ngClass]="{on: IsBitOn(mcService.env.In, i)}"
 						(click)="ToggleBit('In', i)"></div>
 				</div>
 			</div>
 			<div class="row wrap-margin-lg">
 				<div class="col-xs-12">
 					<h3>Out</h3>
-					<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(mcService.env.Out, i)}"
+					<div class="bit" *ngFor="let bit of ArrayOfLength(); let i = index" [ngClass]="{on: IsBitOn(mcService.env.Out, i)}"
 						(click)="ToggleBit('Out', i)"></div>
 				</div>
 			</div>
@@ -95,14 +95,14 @@
 					<div>
 						<button class="btn btn-sm btn-secondary wrap-margin" (click)="mcService.env.Carry = !mcService.env.Carry">Carry: {{mcService.env.Carry}}</button>
 					</div>
-					<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(mcService.env.A, i)}"
+					<div class="bit" *ngFor="let bit of ArrayOfLength(); let i = index" [ngClass]="{on: IsBitOn(mcService.env.A, i)}"
 						(click)="ToggleBit('A', i)"></div>
 				</div>
 			</div>
 			<div class="row wrap-margin-lg">
 				<div class="col-xs-12">
 					<h3>Accumulator B</h3>
-					<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(mcService.env.B, i)}"
+					<div class="bit" *ngFor="let bit of ArrayOfLength(); let i = index" [ngClass]="{on: IsBitOn(mcService.env.B, i)}"
 						(click)="ToggleBit('B', i)"></div>
 				</div>
 			</div>
@@ -110,7 +110,7 @@
 				<div class="col-xs-12">
 					<h3>ProgramCounter</h3>
 					<div class="wrap-margin">
-						<div class="bit" *ngFor="#bit of ArrayOfLength(); #i = index" [ngClass]="{on: IsBitOn(mcService.env.ProgramCounter, i)}"
+						<div class="bit" *ngFor="let bit of ArrayOfLength(); let i = index" [ngClass]="{on: IsBitOn(mcService.env.ProgramCounter, i)}"
 							(click)="ToggleBit('ProgramCounter', i)"></div>
 					</div>
 					<div class="row">
@@ -124,7 +124,7 @@
 		<div class="col-xs-12 col-lg-4">
 			<div class="row">
 				<div class="col-xs-12">
-					<div *ngFor="#statement of mcService.Statements">
+					<div *ngFor="let statement of mcService.Statements">
 						<i>{{statement.Id}}</i> - {{statement.Name}}: {{statement.Desc}}
 					</div>
 				</div>

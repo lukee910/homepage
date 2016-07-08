@@ -85,7 +85,7 @@ body {
 }
 
 .frame-fullscreen .frame {
-	height: 100%;
+	height: calc(100% - 30px);
 	background-color: white;
 }
 

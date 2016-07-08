@@ -2,7 +2,7 @@
 <p>Here are four examples of excercises in php and JavaScript. Check out the Source Code on <a href="https://www.dropbox.com/sh/lrqtv39y3c6d48f/AAAISCAYfMZj3ncyKZmjy7vya?dl=0" target="_blank">Dropbox</a>.</p>
 
 <ul class="nav nav-pills">
-	<li class="nav-item wrap-margin" *ngFor="#route of routes">
+	<li class="nav-item wrap-margin" *ngFor="let route of routes">
 		<a class="nav-link" [ngClass]="{active: currentRoutes[1].path === route.path}" (click)="loadRoute(route)">{{ route.name }}</a>
 	</li>
 </ul>
