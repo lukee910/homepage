@@ -2,13 +2,17 @@
     <a class="navbar-brand" [routerLink]="['/']">lukee910</a>
     <ul class="nav navbar-nav">
         <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/mcsim']">MC Sim</a>
+            <a class="nav-link" [routerLink]="['/']" [routerLinkActive]="'link-active'"
+                [routerLinkActiveOptions]="{exact: true}">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/mcsim']" [routerLinkActive]="'link-active'">MC Sim</a>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="ukToggle" data-toggle="dropdown">&Uuml;K</a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" [routerLink]="['/m105']">M105 SQL</a>
-                <a class="dropdown-item" [routerLink]="['/m307']">M307 Web Apps (JS &amp; PHP)</a>
+                <a class="dropdown-item" [routerLink]="['/m105']" [routerLinkActive]="'link-active'">M105 SQL</a>
+                <a class="dropdown-item" [routerLink]="['/m307']" [routerLinkActive]="'link-active'">M307 Web Apps (JS &amp; PHP)</a>
             </div>
         </li>
     </ul>

@@ -29,9 +29,13 @@ body {
     margin-bottom: 15px;
 }
 
-.navbar-dark .nav-link.router-link-active,
-.navbar-dark .nav-link.router-link-active:focus {
-    color: white;
+.navbar .nav-link.link-active,
+.navbar .nav-link.link-active:focus {
+    color: black;
+}
+
+.navbar .dropdown-item.link-active {
+    background-color: #efefef;
 }
 
 .btn-secondary:not(.btn-danger-outline):not(.btn-success-outline) {
