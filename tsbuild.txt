@@ -1,1 +1,0 @@
---target es5 --module system --moduleResolution node --experimentalDecorators --removeComments --outDir .dist

@@ -74,6 +74,10 @@ body {
 	padding: 0 15px;
 }
 
+.frame-column {
+	height: 100%;
+}
+
 .frame-fullscreen {
 	position: fixed;
 	top: 0;

@@ -1,9 +1,13 @@
 <h1>M307</h1>
-<p>Here are four examples of excercises in php and JavaScript. Check out the Source Code on <a href="https://www.dropbox.com/sh/lrqtv39y3c6d48f/AAAISCAYfMZj3ncyKZmjy7vya?dl=0" target="_blank">Dropbox</a>.</p>
+<p>
+    Here are four examples of excercises in php and JavaScript. Check out the Source Code on
+    <a href="https://www.dropbox.com/sh/lrqtv39y3c6d48f/AAAISCAYfMZj3ncyKZmjy7vya?dl=0" target="_blank">Dropbox</a>.
+</p>
 
 <ul class="nav nav-pills">
 	<li class="nav-item wrap-margin" *ngFor="let route of routes">
-		<a class="nav-link" [ngClass]="{active: currentRoutes[1].path === route.path}" (click)="loadRoute(route)">{{ route.name }}</a>
+		<a class="nav-link" [ngClass]="{active: currentRoutes[1].path === route.path}"
+		   (click)="loadRoute(route)">{{ route.name }}</a>
 	</li>
 </ul>
 <div class="row frame-container" [ngClass]="{'frame-fullscreen darkmode': isFrameFullscreen}">
@@ -20,7 +24,7 @@
 			</button>
 		</div>
 	</div>
-	<div class="col-xs-12"> 
-		<iframe class="frame" id="m307-frame" src="http://php.lukee910.ch/{{currentRoutes[1].path}}"></iframe>
+	<div class="col-xs-12 frame-column">
+		<iframe class="frame" id="m307-frame" [src]="currentUrl"></iframe>
 	</div>
 </div>

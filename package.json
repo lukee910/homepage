@@ -1,46 +1,38 @@
 {
   "name": "homepage",
-  "version": "0.0.1",
-  "description": "Personal Homepage at www.lukee910.ch",
-  "main": "index.html",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lukee910/homepage.git"
-  },
-  "author": "Lukas Doerig <lukee910@gmail.com>",
-  "bugs": {
-    "url": "https://github.com/lukee910/homepage/issues"
-  },
-  "homepage": "http://www.lukee910.ch",
-  "license": "MIT",
+  "version": "2.0.0",
+  "description": "Homepage of lukee910",
   "scripts": {
-    "start": "concurrently \"npm run tsc:w\" \"npm run lite\" ",
-    "tsc": "tsc",
-    "tsc:w": "tsc -w",
+    "start": "ntsc & concurrently \"ntsc -w\" \"lite-server\" ",
     "lite": "lite-server",
-    "typings": "typings",
-    "postinstall": "typings install",
-    "build": "concurrently \"npm install\" \"npm run tsc @tsbuild.txt\"",
-    "build:win": "npm run build && del /S \".dist\\*.map\"",
-    "build:linux": "concurrently \"npm run build\" \"find ./.dist -name '*.map' -delete\""
+    "tsc": "ntsc",
+    "tsc:w": "ntsc -w"
   },
+  "license": "ISC",
   "dependencies": {
-    "angular2": "^2.0.0-beta.17",
-    "bootstrap": "^4.0.0-alpha.2",
-    "es6-promise": "^3.0.2",
-    "es6-shim": "^0.35.1",
-    "font-awesome": "^4.5.0",
-    "jquery": "^2.2.1",
-    "reflect-metadata": "0.1.2",
-    "rxjs": "5.0.0-beta.6",
-    "systemjs": "^0.19.31",
-    "tether": "^1.2.0",
-    "zone.js": "^0.6.12"
+    "@angular/common": "~2.2.0",
+    "@angular/compiler": "~2.2.0",
+    "@angular/core": "~2.2.0",
+    "@angular/forms": "~2.2.0",
+    "@angular/http": "~2.2.0",
+    "@angular/platform-browser": "~2.2.0",
+    "@angular/platform-browser-dynamic": "~2.2.0",
+    "@angular/router": "~3.2.0",
+    "@angular/upgrade": "~2.2.0",
+    "bootstrap": "^4.0.0-alpha.5",
+    "core-js": "^2.4.1",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.1.1",
+    "reflect-metadata": "^0.1.8",
+    "rxjs": "5.0.0-beta.12",
+    "systemjs": "0.19.40",
+    "tether": "^1.3.7",
+    "zone.js": "^0.6.26"
   },
   "devDependencies": {
-    "concurrently": "^2.2.0",
-    "lite-server": "^2.2.2",
-    "typescript": "^1.8.2",
-    "typings": "^1.3.1"
-  }
+    "concurrently": "3.1.0",
+    "lite-server": "^2.2.0",
+    "typescript": "^2.0.2"
+  },
+  "repository": {}
 }

@@ -1,4 +1,4 @@
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {McEnvironment} from '../model/McEnvironment';
 import {Statement} from '../model/Statement';
 

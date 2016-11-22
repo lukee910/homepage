@@ -1,6 +1,7 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {Route} from '../model/Route';
-import {NgClass} from 'angular2/common';
+import {NgClass} from '@angular/common';
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
     templateUrl: 'app/m307/m307.html',
@@ -17,9 +18,10 @@ export class M307Component {
 	];
 	public routes: Route[] = M307Component.routes;
 	public currentRoutes: Route[] = [];
+	public currentUrl: SafeResourceUrl;
 	public isFrameFullscreen: boolean;
 
-	constructor() {
+	constructor(private domSanitizer: DomSanitizer) {
 		this.loadRoute(this.routes[0]);
 		this.isFrameFullscreen = false;
 	}
@@ -46,6 +48,9 @@ export class M307Component {
 		} else {
 			this.currentRoutes[2] = this.routes[index + 1];
 		}
+
+		this.currentUrl =
+            this.domSanitizer.bypassSecurityTrustResourceUrl('http://php.lukee910.ch/' + this.currentRoutes[1].path);
 	}
 
 	public toggleFullscreen(): void {
